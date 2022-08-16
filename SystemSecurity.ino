@@ -12,11 +12,11 @@ int pinStatePrevious  = LOW;// previous state of pin
 const char SecurityKey[] ="KstyanosCasa#$%&";
 int SecurityActive = 0;
 
-/*
+
 const char ssid[] = "grupo_Hardcore";
-const char pass[] = "equipo1Said"; */
-const char ssid[] = "INFINITUM64DC";
-const char pass[] = "UQs3CTyPyg";
+const char pass[] = "equipo1Said"; 
+/*const char ssid[] = "INFINITUM64DC";
+const char pass[] = "UQs3CTyPyg";*/
 
 WiFiClient net;
 MQTTClient client;
