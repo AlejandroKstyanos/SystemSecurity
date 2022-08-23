@@ -15,20 +15,28 @@ Using Esp8266, sensors and internet to create a system security.
 ## Code
 ```C++
 
+
 #include <ESP8266WiFi.h>
 #include <MQTT.h>
 
 //PINS
 #define alarm 14 // PIN D5 ESP8266
 #define led 2 // BUILD_IN LED
+
 const int MOTION_SENSOR_PIN = 12; //GIOP12 pin connected to OUTPUT PIN OF SENSOR
 int pinStateCurrent   = LOW;      // current state of pin
 int pinStatePrevious  = LOW;// previous state of pin
 const char SecurityKey[] ="KstyanosCasa#$%&";
 int SecurityActive = 0;
 
+//Examples of ssid and password:
+const char ssid[] = "INFINITUM64DC";
+const char pass[] = "UQs3CTyPyg"; 
+/*
 const char ssid[] = "grupo_Hardcore";
-const char pass[] = "equipo1Said";
+const char pass[] = "equipo1Said"; */
+/*const char ssid[] = "INFINITUM64DC";
+const char pass[] = "UQs3CTyPyg";*/
 
 WiFiClient net;
 MQTTClient client;
@@ -50,9 +58,9 @@ void connect() {
   }
 
   Serial.println("\nconnected!");
-  digitalWrite(led,HIGH);
-  delay(200);
-  digitalWrite(led,LOW);
+  digitalWrite(alarm,HIGH);
+  delay(500);
+  digitalWrite(alarm,LOW);
   
 
   client.subscribe("system/status");
@@ -64,10 +72,15 @@ void messageReceived(String &topic, String &payload) {
     SecurityActive = 1;
     Serial.println("System ON");
     client.publish("system/status", "ON");
-    
+    digitalWrite(alarm,HIGH);
+    delay(1000);
+    digitalWrite(alarm,LOW);
   }else if(topic=="system/password" && payload==SecurityKey && SecurityActive == 1){
     SecurityActive = 0;
     client.publish("system/status", "OFF");
+    digitalWrite(alarm,HIGH);
+    delay(2000);
+    digitalWrite(alarm,LOW);
   }
   
   Serial.println(topic + " : " + payload);
@@ -111,14 +124,12 @@ void loop() {
   if(SecurityActive == 1) {
     if (pinStatePrevious == LOW && pinStateCurrent == HIGH) {   // pin state change: LOW -> HIGH
     Serial.println("Motion detected!");
-    // TODO: turn on alarm, light or activate a device ... here
     digitalWrite(alarm,HIGH);
+    client.publish("system/alarm", "Motion detected!");
     }else if (pinStatePrevious == HIGH && pinStateCurrent == LOW) {   // pin state change: HIGH -> LOW
       Serial.println("Motion stopped!");
-      // TODO: turn off alarm, light or deactivate a device ... here
       digitalWrite(alarm,LOW);
     }  
   }
-  
 }
 ```

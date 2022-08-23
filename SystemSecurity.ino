@@ -12,9 +12,12 @@ int pinStatePrevious  = LOW;// previous state of pin
 const char SecurityKey[] ="KstyanosCasa#$%&";
 int SecurityActive = 0;
 
-
+//Examples of ssid and password:
+const char ssid[] = "INFINITUM64DC";
+const char pass[] = "UQs3CTyPyg"; 
+/*
 const char ssid[] = "grupo_Hardcore";
-const char pass[] = "equipo1Said"; 
+const char pass[] = "equipo1Said"; */
 /*const char ssid[] = "INFINITUM64DC";
 const char pass[] = "UQs3CTyPyg";*/
 
